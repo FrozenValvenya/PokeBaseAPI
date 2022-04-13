@@ -9,12 +9,13 @@ val exposed_version: String by project
 plugins {
     application
     kotlin("jvm") version "1.6.10"
+    id("com.github.johnrengelman.shadow") version "7.0.0"
 }
 
 group = "com.pokebase"
 version = "0.0.1"
 application {
-    mainClass.set("com.example.ApplicationKt")
+    mainClass.set("com.pokebase.ApplicationKt")
 
     val isDevelopment: Boolean = project.ext.has("development")
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
@@ -49,6 +50,14 @@ dependencies {
 
 tasks.withType<KotlinCompile>().all {
     kotlinOptions {
-        jvmTarget = "13"
+        jvmTarget = "11"
+    }
+}
+
+tasks {
+    shadowJar {
+        manifest {
+            attributes(Pair("Main-Class", "com.pokebase.ApplicationKt"))
+        }
     }
 }
