@@ -7,7 +7,6 @@ data class Pokemon(
     val level: Int,
     val nature: Nature,
     val moves : ArrayList<Move>,
-    val ability : String,
     val iv : Stats,
     val ev : Stats,
     val user : User

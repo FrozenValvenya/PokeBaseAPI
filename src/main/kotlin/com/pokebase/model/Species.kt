@@ -13,6 +13,5 @@ data class Species(
     val height : Float,
     val baseStats : Stats,
     val movePool : ArrayList<Move>,
-    val abilities : ArrayList<String>,
     val image : URL
 )

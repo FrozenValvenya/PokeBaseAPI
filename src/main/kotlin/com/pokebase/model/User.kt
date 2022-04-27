@@ -1,10 +1,8 @@
 package com.pokebase.model
 
-import java.util.UUID
-
 data class User(
-    val userId : UUID,
-    val name : String,
+    val userId : Int,
+    val username : String,
     val isAdmin : Boolean,
     val pokemonList : List<Pokemon>
 )
