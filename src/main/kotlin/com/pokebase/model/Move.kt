@@ -6,7 +6,7 @@ data class Move(
     val type : Type,
     val category : Category,
     val power : Int?,
-    val accuracy : Int,
+    val accuracy : Int?,
     val pp : Int,
     val description : String
 )
