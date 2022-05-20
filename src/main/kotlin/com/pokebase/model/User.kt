@@ -4,5 +4,4 @@ data class User(
     val userId : Int,
     val username : String,
     val isAdmin : Boolean,
-    val pokemonList : List<Pokemon>
 )
