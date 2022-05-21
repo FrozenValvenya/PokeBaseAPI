@@ -2,7 +2,7 @@ services:
   psql:
     restart: always
     container_name: psql
-    image: postgres:10
+    image: postgres:14.2
     ports:
       - "5432:5432"
     environment:
@@ -10,7 +10,7 @@ services:
       - POSTGRES_PASSWORD=pass
       - POSTGRES_DB=pokemon
     volumes:
-      - psql_vol:/var/lib/postgresql
+      - psql_data:/var/lib/postgresql/data
   api:
     build: .
     container_name: api
@@ -21,4 +21,4 @@ services:
 
 
 volumes:
-  psql_vol:
+  psql_data:
