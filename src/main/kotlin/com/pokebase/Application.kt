@@ -1,7 +1,12 @@
 package com.pokebase
 
+import com.auth0.jwt.JWT
+import com.auth0.jwt.algorithms.Algorithm
 import com.pokebase.auth.authRoute
-import com.pokebase.database.entities.UserTable
+import com.pokebase.database.entities.*
+import com.pokebase.model.Category
+import com.pokebase.model.Type
+import com.pokebase.species.speciesRoute
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ktor.application.*
@@ -32,7 +37,14 @@ fun Application.initDB() {
 
     Database.connect(HikariDataSource(config))
     transaction {
-        SchemaUtils.createMissingTablesAndColumns(UserTable)
+        SchemaUtils.createMissingTablesAndColumns(UserTable,
+            MoveTable,
+            SpeciesTable,
+            PokemonTable,
+            MovePokemonTable,
+            MoveSpeciesTable,
+            SpeciesToSpeciesTable
+        )
     }
 }
 fun Application.module() {
@@ -49,6 +61,17 @@ fun Application.module() {
     install(Authentication) {
         jwt("auth-jwt") {
             realm = appConfig.jwtConfig.realm
+            verifier(JWT.require(Algorithm.HMAC256(appConfig.jwtConfig.secret))
+                .build())
+            validate {
+                credential ->
+                if (credential.payload.getClaim("username").asString() != "") {
+                    JWTPrincipal(credential.payload)
+                }
+                else {
+                    null
+                }
+            }
         }
     }
 
@@ -62,5 +85,6 @@ fun Application.module() {
             call.respondText("Hello, world!")
         }
         authRoute()
+        speciesRoute()
     }
 }

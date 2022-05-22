@@ -7,10 +7,10 @@ data class Species(
     val name : String,
     val primaryType : Type,
     val secondaryType : Type?,
-    val evolutions : ArrayList<Species>,
+    val evolutions : List<Species>,
     val weight : Float,
     val height : Float,
     val baseStats : Stats,
-    val movePool : ArrayList<Move>,
+    val movePool : List<Move>,
     val image : URL
 )

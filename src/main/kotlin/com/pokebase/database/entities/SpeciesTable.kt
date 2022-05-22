@@ -7,7 +7,6 @@ import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table
-import java.net.URL
 
 object SpeciesTable : IntIdTable("species", "species_id") {
     val name : Column<String> = varchar("name", 15)
@@ -45,5 +44,6 @@ class Species(id: EntityID<Int>) : IntEntity(id) {
     var spe by SpeciesTable.spe
     var image by SpeciesTable.image
     var evolutions by Species.via(SpeciesToSpeciesTable.preEvolution, SpeciesToSpeciesTable.evolution)
+//    var preEvolutions by Species.via(SpeciesToSpeciesTable.evolution, SpeciesToSpeciesTable.preEvolution)
     var movePool by Move via MoveSpeciesTable
 }
