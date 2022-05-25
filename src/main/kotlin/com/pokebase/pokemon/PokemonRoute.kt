@@ -87,7 +87,7 @@ fun Route.pokemonRoute() {
 
                 val pokemonList = pokemonRepo.readAll(user.id.value)
 
-                call.respond(pokemonList.map { p -> p.toPokemonShort() })
+                call.respond(pokemonList)
             }
 
             get("/{pokemonId}") {
@@ -109,8 +109,10 @@ fun Route.pokemonRoute() {
                     ?: return@get call.respond(HttpStatusCode.BadRequest,
                         "Id doesn't exist")
 
-                call.respond(pokemon.toPokemonResponse())
+                call.respond(pokemon)
             }
+
+
 
             delete("/{pokemonId}") {
                 //val username = call.principal<JWTPrincipal>()!!

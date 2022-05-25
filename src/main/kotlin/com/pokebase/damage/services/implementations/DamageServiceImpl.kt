@@ -56,23 +56,26 @@ class DamageServiceImpl: DamageService {
             throw IllegalArgumentException("Move can't be status")
         }
 
-        val attackerStats = calculateStats(
-            attacker.species.getBaseStats(),
-            attacker.getIV(),
-            attacker.getEV(),
-            attacker.level
-        )
+        val attackerStats =  transaction {
+            calculateStats(
+                attacker.species.getBaseStats(),
+                attacker.getIV(),
+                attacker.getEV(),
+                attacker.level
+            )
+        }
 
-        val defenderStats = calculateStats(
-            defender.species.getBaseStats(),
-            defender.getIV(),
-            defender.getEV(),
-            defender.level
-        )
-
-        val stab = if (move.type == attacker.species.primaryType
-            || move.type == attacker.species.secondaryType)
-            1.5 else 1
+        val defenderStats = transaction {
+             calculateStats(
+                defender.species.getBaseStats(),
+                defender.getIV(),
+                defender.getEV(),
+                defender.level
+            )
+        }
+       // val stab = if (move.type == attacker.species.primaryType
+       //     || move.type == attacker.species.secondaryType)
+       //     1.5 else 1
 
         val result = (((2 * attacker.level)/5 + 2)
                 * move.power!!

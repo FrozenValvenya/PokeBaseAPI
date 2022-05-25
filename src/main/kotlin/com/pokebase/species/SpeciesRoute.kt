@@ -81,7 +81,7 @@ fun Route.speciesRoute() {
                     ?: return@get call.respond(HttpStatusCode.BadRequest,
                         "Id doesn't exist")
 
-                call.respond(species.toSpeciesResponse())
+                call.respond(species)
             }
         }
     }

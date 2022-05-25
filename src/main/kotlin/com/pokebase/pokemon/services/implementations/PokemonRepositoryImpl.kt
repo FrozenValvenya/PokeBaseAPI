@@ -5,25 +5,29 @@ import com.pokebase.database.entities.Pokemon
 import com.pokebase.database.entities.PokemonTable
 import com.pokebase.database.entities.Species
 import com.pokebase.pokemon.dto.PokemonAdd
+import com.pokebase.pokemon.dto.PokemonResponse
+import com.pokebase.pokemon.dto.PokemonShort
 import com.pokebase.pokemon.services.PokemonRepository
+import com.pokebase.pokemon.toPokemonResponse
+import com.pokebase.pokemon.toPokemonShort
 import org.jetbrains.exposed.sql.SizedCollection
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class PokemonRepositoryImpl: PokemonRepository {
-    override fun readAll(userId: Int): List<Pokemon> {
+    override fun readAll(userId: Int): List<PokemonShort> {
         return transaction {
             Pokemon.find{ PokemonTable.user eq userId }
-                .toList()
+                .map { p -> p.toPokemonShort()}
         }
     }
 
-    override fun read(userId: Int, pokemonId: Int): Pokemon? {
+    override fun read(userId: Int, pokemonId: Int): PokemonResponse? {
         return transaction {
             Pokemon.find {
                 (PokemonTable.user eq userId) and
                 (PokemonTable.id eq pokemonId)
-            }.firstOrNull()
+            }.firstOrNull()?.toPokemonResponse()
         }
     }
 

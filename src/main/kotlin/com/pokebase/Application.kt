@@ -7,6 +7,7 @@ import com.pokebase.damage.damageRoute
 import com.pokebase.database.entities.*
 import com.pokebase.model.Category
 import com.pokebase.model.Type
+import com.pokebase.move.moveRoute
 import com.pokebase.pokemon.pokemonRoute
 import com.pokebase.species.speciesRoute
 import com.zaxxer.hikari.HikariConfig
@@ -90,5 +91,6 @@ fun Application.module() {
         speciesRoute()
         pokemonRoute()
         damageRoute()
+        moveRoute()
     }
 }

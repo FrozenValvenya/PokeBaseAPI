@@ -6,6 +6,8 @@ import com.pokebase.auth.services.implementations.AuthServiceImpl
 import com.pokebase.auth.services.implementations.UserRepositoryImpl
 import com.pokebase.damage.services.DamageService
 import com.pokebase.damage.services.implementations.DamageServiceImpl
+import com.pokebase.move.services.MoveRepository
+import com.pokebase.move.services.implementations.MoveRepositoryImpl
 import com.pokebase.pokemon.services.PokemonRepository
 import com.pokebase.pokemon.services.implementations.PokemonRepositoryImpl
 import com.pokebase.species.services.SpeciesRepository
@@ -19,4 +21,5 @@ val appModule = module {
     single<SpeciesRepository> { SpeciesRepositoryImpl() }
     single<PokemonRepository> { PokemonRepositoryImpl() }
     single<DamageService> { DamageServiceImpl() }
+    single<MoveRepository> { MoveRepositoryImpl() }
 }
