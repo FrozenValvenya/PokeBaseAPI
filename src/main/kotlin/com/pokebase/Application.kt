@@ -3,9 +3,11 @@ package com.pokebase
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.pokebase.auth.authRoute
+import com.pokebase.damage.damageRoute
 import com.pokebase.database.entities.*
 import com.pokebase.model.Category
 import com.pokebase.model.Type
+import com.pokebase.pokemon.pokemonRoute
 import com.pokebase.species.speciesRoute
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
@@ -86,5 +88,7 @@ fun Application.module() {
         }
         authRoute()
         speciesRoute()
+        pokemonRoute()
+        damageRoute()
     }
 }
