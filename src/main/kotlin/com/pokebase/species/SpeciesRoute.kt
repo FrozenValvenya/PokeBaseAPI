@@ -9,6 +9,7 @@ import com.pokebase.species.dto.SpeciesShort
 import com.pokebase.species.services.SpeciesRepository
 import io.ktor.application.*
 import io.ktor.auth.*
+import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
@@ -19,13 +20,13 @@ fun Species.toSpeciesResponse() : SpeciesResponse = SpeciesResponse(
     name = name,
     primaryType = primaryType,
     secondaryType = secondaryType,
-    evolutions = evolutions.toList().map { s -> s.toSpeciesResponse() },
+    evolutions = evolutions.map { s -> s.toSpeciesResponse() },
     weight = weight,
     height = height,
     baseStats = Stats(
         hp, atk, def, spa, spd, spe
     ),
-    movePool = movePool.toList().map {m -> m.toMoveResponse()},
+    movePool = movePool.map {m -> m.toMoveResponse()},
     image = image
 )
 
@@ -52,6 +53,35 @@ fun Route.speciesRoute() {
                 val speciesAdd = call.receive<SpeciesAdd>()
                 val speciesId = speciesRepo.create(speciesAdd)
                 call.respond(hashMapOf("speciesId" to speciesId))
+            }
+
+            get("/{speciesId}/moves") {
+                val speciesId = try {
+                    call.parameters["speciesId"]!!.toInt()
+                } catch (ex: NumberFormatException) {
+                    return@get call.respond(
+                        HttpStatusCode.BadRequest,
+                        "Id must be a number")
+                }
+                val moveList = speciesRepo.getMoves(speciesId)
+
+                call.respond(moveList.map { m -> m.toMoveResponse() })
+            }
+
+            get("/{speciesId}") {
+                val speciesId = try {
+                    call.parameters["speciesId"]!!.toInt()
+                } catch (ex: NumberFormatException) {
+                    return@get call.respond(
+                        HttpStatusCode.BadRequest,
+                        "Id must be a number")
+                }
+
+                val species = speciesRepo.read(speciesId)
+                    ?: return@get call.respond(HttpStatusCode.BadRequest,
+                        "Id doesn't exist")
+
+                call.respond(species.toSpeciesResponse())
             }
         }
     }

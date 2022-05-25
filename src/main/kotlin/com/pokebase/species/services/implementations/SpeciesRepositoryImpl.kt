@@ -33,13 +33,24 @@ class SpeciesRepositoryImpl : SpeciesRepository {
         return speciesId
     }
 
-    override fun read(speciesId: Int): Species {
-        TODO("Not yet implemented")
+    override fun read(speciesId: Int): Species? {
+        return transaction {
+            Species.findById(speciesId)
+        }
     }
 
     override fun readAll(): List<Species> {
         return transaction {
             Species.all().toList()
+        }
+    }
+
+    override fun getMoves(speciesId: Int): List<Move> {
+        return transaction {
+            val species = Species.findById(speciesId)
+                ?: throw IllegalArgumentException("Species id doesn't exist")
+
+            species.movePool.toList()
         }
     }
 }
