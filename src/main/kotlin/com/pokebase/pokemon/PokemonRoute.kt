@@ -6,6 +6,7 @@ import com.pokebase.database.entities.Species
 import com.pokebase.database.entities.User
 import com.pokebase.model.Stats
 import com.pokebase.move.toMoveResponse
+import com.pokebase.pokemon.dto.PokemonAdd
 import com.pokebase.pokemon.dto.PokemonMove
 import com.pokebase.pokemon.dto.PokemonResponse
 import com.pokebase.pokemon.dto.PokemonShort
@@ -153,6 +154,22 @@ fun Route.pokemonRoute() {
                 }
 
                 call.respond("OK")
+            }
+
+            put {
+                val user = getUsername(call)
+                    ?: return@put call.respond(HttpStatusCode.Forbidden,
+                        "Invalid authentication")
+
+                val pokemonAdd = call.receive<PokemonAdd>()
+                val pokemonId = try {
+                    pokemonRepo.create(user.id.value, pokemonAdd)
+                } catch (ex: IllegalArgumentException) {
+                    return@put call.respond(HttpStatusCode.BadRequest,
+                    ex.message!!)
+                }
+
+                call.respond(hashMapOf("pokemonId" to pokemonId))
             }
 
             delete("/move") {
