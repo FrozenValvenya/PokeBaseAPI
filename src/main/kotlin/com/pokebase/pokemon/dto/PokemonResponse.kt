@@ -4,6 +4,7 @@ import com.pokebase.model.Stats
 import com.pokebase.move.dto.MoveResponse
 import com.pokebase.species.dto.SpeciesResponse
 
+@kotlinx.serialization.Serializable
 data class PokemonResponse(
     val pokemonId: Int,
     val nickname: String,

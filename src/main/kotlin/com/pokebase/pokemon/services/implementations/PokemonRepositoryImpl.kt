@@ -1,9 +1,6 @@
 package com.pokebase.pokemon.services.implementations
 
-import com.pokebase.database.entities.Move
-import com.pokebase.database.entities.Pokemon
-import com.pokebase.database.entities.PokemonTable
-import com.pokebase.database.entities.Species
+import com.pokebase.database.entities.*
 import com.pokebase.pokemon.dto.PokemonAdd
 import com.pokebase.pokemon.dto.PokemonResponse
 import com.pokebase.pokemon.dto.PokemonShort
@@ -36,6 +33,7 @@ class PokemonRepositoryImpl: PokemonRepository {
             Pokemon.new {
                 nickname = pokemon.nickname
                 level = pokemon.level
+                user = User.findById(userId)!!
                 species = Species.findById(pokemon.speciesId)
                     ?: throw IllegalArgumentException("Species id doesn't exist")
             }.id.value
